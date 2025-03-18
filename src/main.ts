@@ -9,7 +9,8 @@ async function bootstrap() {
       .setTitle('Доска объявлений')
       .setDescription('Описание Api')
       .setVersion('1.0')
-      .addTag('cats')
+      // .addTag('cats')
+      .addBearerAuth()
       .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, documentFactory);

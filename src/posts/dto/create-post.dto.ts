@@ -6,7 +6,7 @@ export class CreatePostDto {
     title: string
 
     @ApiProperty ({
-        description: "Название объявления",
+        description: "Описание объявления",
     })
     description: string
 

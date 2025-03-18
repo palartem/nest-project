@@ -1,3 +1,6 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 export class CreateCategoryDto {
-    name: string
+    @ApiProperty({ description: "Название категории" })
+    name: string;
 }
