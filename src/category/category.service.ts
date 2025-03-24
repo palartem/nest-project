@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from "@nestjs/typeorm";
@@ -10,7 +10,7 @@ export class CategoryService {
   constructor(
       @InjectRepository(Category)
       private repository: Repository<Category>
-  ) { }
+  ) {}
 
   create(data: CreateCategoryDto) {
     return this.repository.save(data);
@@ -20,15 +20,22 @@ export class CategoryService {
     return this.repository.find();
   }
 
-  findOne(id: number) {
-    return this.repository.findOneBy({ id });
+  async findOne(id: number) {
+    const category = await this.repository.findOneBy({ id });
+    if (!category) {
+      throw new NotFoundException(`Категория с ID ${id} не найдена`);
+    }
+    return category;
   }
 
-  update(id: number, data: UpdateCategoryDto) {
-    return this.repository.save({...data, id});
+  async update(id: number, data: UpdateCategoryDto) {
+    await this.findOne(id);
+    return this.repository.save({ ...data, id });
   }
 
   async remove(id: number) {
-    return this.repository.delete(id);
+    const category = await this.findOne(id);
+    await this.repository.delete(id);
+    return { message: `Категория с ID ${id} удалена` };
   }
 }
