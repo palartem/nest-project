@@ -1,20 +1,26 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Post } from 'src/posts/entities/post.entity';
-import {ApiProperty} from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Category {
-    @ApiProperty({
-        minimum: 1
-    })
-    @PrimaryGeneratedColumn()
-    id: number;
+  @ApiProperty({
+    minimum: 1,
+  })
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ApiProperty()
-    @Column()
-    name: string;
+  @ApiProperty()
+  @Column()
+  name: string;
 
-    @ApiProperty({ type: () => [Post] })
-    @OneToMany(type => Post, post => post.category)
-    posts: Post[]
+  @ApiProperty({ type: () => [Post] })
+  @OneToMany((type) => Post, (post) => post.category)
+  posts: Post[];
 }

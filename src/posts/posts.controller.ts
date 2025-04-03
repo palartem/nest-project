@@ -1,10 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import {AuthGuard} from "@nestjs/passport";
-import { ApiTags, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { Post as postEntity } from './entities/post.entity'
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Post as postEntity } from './entities/post.entity';
 
 @ApiTags('Posts')
 @ApiBearerAuth()
@@ -12,7 +21,11 @@ import { Post as postEntity } from './entities/post.entity'
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @ApiResponse({ status: 200, description: 'Объявление успешно добавлено', type: postEntity })
+  @ApiResponse({
+    status: 200,
+    description: 'Объявление успешно добавлено',
+    type: postEntity,
+  })
   @ApiResponse({ status: 400, description: 'Некорректные данные' })
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
@@ -21,7 +34,11 @@ export class PostsController {
 
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Список объявлений', type: [postEntity] })
+  @ApiResponse({
+    status: 200,
+    description: 'Список объявлений',
+    type: [postEntity],
+  })
   @ApiResponse({ status: 401, description: 'Неавторизовано' })
   @Get()
   findAll() {
@@ -30,7 +47,11 @@ export class PostsController {
 
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Объявление найдено', type: postEntity })
+  @ApiResponse({
+    status: 200,
+    description: 'Объявление найдено',
+    type: postEntity,
+  })
   @ApiResponse({ status: 404, description: 'Объявление не найдено' })
   @ApiResponse({ status: 401, description: 'Неавторизовано' })
   @Get(':id')
@@ -40,7 +61,11 @@ export class PostsController {
 
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Объявление обновлено', type: postEntity })
+  @ApiResponse({
+    status: 200,
+    description: 'Объявление обновлено',
+    type: postEntity,
+  })
   @ApiResponse({ status: 404, description: 'Объявление не найдено' })
   @ApiResponse({ status: 401, description: 'Неавторизовано' })
   @Patch(':id')

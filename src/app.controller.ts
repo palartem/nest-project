@@ -1,17 +1,25 @@
-import {Body, Controller, Get, Post, Request, UseGuards, UsePipes } from '@nestjs/common';
-import {AppService} from "./app.service";
-import {CreateUserDto, CreateUserSchema} from "./users/dto/create-user.dto";
-import {UsersService} from "./users/users.service";
-import {AuthGuard} from "@nestjs/passport";
-import {AuthService} from "./auth/auth.service";
-import {JoiValidationPipe} from "../pipes/ValidationPipe";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
+import { AppService } from './app.service';
+import { CreateUserDto, CreateUserSchema } from './users/dto/create-user.dto';
+import { UsersService } from './users/users.service';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth/auth.service';
+import { JoiValidationPipe } from './pipes/ValidationPipe';
 
 @Controller()
 export class AppController {
   constructor(
-      private readonly usersService: UsersService,
-      private authService: AuthService,
-      private readonly appService: AppService
+    private readonly usersService: UsersService,
+    private authService: AuthService,
+    private readonly appService: AppService,
   ) {}
   @Post('auth/register')
   @UsePipes(new JoiValidationPipe(CreateUserSchema))
