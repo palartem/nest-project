@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -41,8 +42,13 @@ export class PostsController {
   })
   @ApiResponse({ status: 401, description: 'Неавторизовано' })
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(
+      @Query('page') page: string = '1',
+      @Query('limit') limit: string = '10'
+  ) {
+    const pageNum = Math.max(1, Number(page) || 1);
+    const limitNum = Math.max(1, Number(limit) || 10);
+    return this.postsService.findAll(pageNum, limitNum);
   }
 
   @UseGuards(AuthGuard('jwt'))

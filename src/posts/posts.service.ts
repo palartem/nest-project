@@ -19,8 +19,19 @@ export class PostsService {
     });
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll(page: number, limit: number) {
+    const [posts, total] = await this.repository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { changed_at: 'ASC' },
+    });
+
+    return {
+      data: posts,
+      total,
+      page,
+      limit,
+    };
   }
 
   findOne(id: number) {
