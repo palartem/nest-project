@@ -40,4 +40,15 @@ export class UsersService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+  async findById(userId: number): Promise<User | null> {
+    return this.repository.findOne({ where: { id: userId } });
+  }
+
+  async updateRefreshToken(userId: number, refreshToken: string): Promise<void> {
+    await this.repository.update(userId, { refreshToken });
+  }
+
+  async removeRefreshToken(userId: number): Promise<void> {
+    await this.repository.update(userId, { refreshToken: undefined });
+  }
 }

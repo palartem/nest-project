@@ -33,6 +33,18 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
+  @Post('auth/refresh')
+  async refresh(@Body() body) {
+    const { userId, refresh_token } = body;
+    return this.authService.refreshToken(userId, refresh_token);
+  }
+
+  @Post('auth/logout')
+  async logout(@Body() body) {
+    const { userId } = body;
+    return this.authService.logout(userId);
+  }
+
   @Get()
   getHello(): string {
     return this.appService.getHello();
