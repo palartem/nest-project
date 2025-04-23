@@ -13,6 +13,7 @@ import { UsersService } from './users/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
 import { JoiValidationPipe } from './pipes/ValidationPipe';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -27,22 +28,22 @@ export class AppController {
     return this.usersService.register(CreateUserDto);
   }
 
-  @UseGuards(AuthGuard('local')) //(new (AuthGuard('local')))
+  @UseGuards(AuthGuard('local'))
   @Post('auth/login')
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('auth/refresh')
-  async refresh(@Body() body) {
-    const { userId, refresh_token } = body;
-    return this.authService.refreshToken(userId, refresh_token);
+  async refresh(@Body('refresh_token') refresh_token: string) {
+    return this.authService.refreshToken(refresh_token);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('auth/logout')
-  async logout(@Body() body) {
-    const { userId } = body;
-    return this.authService.logout(userId);
+  async logout(@Body('token') token: string) {
+    return this.authService.logout(token);
   }
 
   @Get()

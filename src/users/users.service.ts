@@ -9,9 +9,10 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private repository: Repository<User>,
+      @InjectRepository(User)
+      private repository: Repository<User>,
   ) {}
+
   async register(data: CreateUserDto) {
     const saltOrRounds = 10;
     data.password = await bcrypt.hash(data.password, saltOrRounds);
@@ -25,6 +26,7 @@ export class UsersService {
     }
     return await bcrypt.hash(data.password, user.password);
   }
+
   findAll() {
     return this.repository.find();
   }
@@ -33,22 +35,15 @@ export class UsersService {
     return this.repository.findOneBy({ email });
   }
 
+  async findById(userId: number): Promise<User | null> {
+    return this.repository.findOne({ where: { id: userId } });
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
     return `This action removes a #${id} user`;
-  }
-  async findById(userId: number): Promise<User | null> {
-    return this.repository.findOne({ where: { id: userId } });
-  }
-
-  async updateRefreshToken(userId: number, refreshToken: string): Promise<void> {
-    await this.repository.update(userId, { refreshToken });
-  }
-
-  async removeRefreshToken(userId: number): Promise<void> {
-    await this.repository.update(userId, { refreshToken: undefined });
   }
 }
